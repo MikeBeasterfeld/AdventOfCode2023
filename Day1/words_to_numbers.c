@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 
-int main(void) {
-    char input[1000];
+const char* words_to_numbers(char input[1000]);
 
+const char* words_to_numbers(char input[1000]) {
     char numbers[9][6] = {
         {"one"},
         {"two"},
@@ -18,65 +18,116 @@ int main(void) {
 
     int count = 0;
 
-    while (fscanf(stdin, "%s", input) != EOF && count < 10) {
-        // printf("Start input - %s\n", input);
-        for(int i = 8; i >= 0; i--) {
-            // printf("start %s - %s - %i\n", numbers[i], input, i);
-            // printf("i %i\n", i);
-            char* substring[1000];
+        // printf("%s\n", input);
+        // printf("%i\n", (int) strlen(input));
+        int firstIndex = (int) strlen(input);
+        int firstIndexMatch = -1;
+
+        int lastIndex = 0;
+        int lastIndexMatch = -1;
+
+        char* substring[1000];
+        char newString[1000] = "";
+
+        for (int i = 0; i < 9; i++) {
             if ((substring[0] = strstr(input, numbers[i])) != NULL) {
-                char newInput[1000] = "";
+                // printf("%i %s\n", i, *substring);
+                int startIndex = (int) strlen(input) - (int) strlen(*substring);
 
-                int beforeCharacters = (int) strlen(input) - (int) strlen(*substring);
-                int afterCharacters = (int) strlen(input) - (int) strlen(numbers[i]) - beforeCharacters;
-
-                // printf("before characters %i - after characters %i\n", beforeCharacters, afterCharacters);
-                // printf("substring %s\n", *substring);
-
-                for(int j = 0; j < beforeCharacters; j++) {
-                    // printf("b j %i\n", j);
-                    // printf("%s\n", newInput);
-                    newInput[j] = input[j];
-                    // printf("%s\n", newInput);
+                if (startIndex < firstIndex) {
+                    firstIndex = startIndex;
+                    firstIndexMatch = i;
                 }
-
-                newInput[beforeCharacters] = i + 1 + '0';
-
-                // printf("replace %s\n", newInput);
-
-                int inputOffset = beforeCharacters + (int) strlen(numbers[i]);
-                // printf("offset %i\n", inputOffset);
-
-                for(int j = inputOffset; j < inputOffset + afterCharacters; j++) {
-                    int newInputIndex = j - (int) strlen(numbers[i] + 1);
-                    // printf("newInputIndex %i\n", newInputIndex);
-                    // printf("%s\n", newInput);
-                    // printf("j - %i\n", j);
-                    newInput[newInputIndex] = input[j];
-                    // printf("%s\n", newInput);
-                }
-
-                // printf("before copy %s\n", newInput);
-                strcpy(input, newInput);
             }
         }
-        // count++;
-        printf("%s\n", input);
-        count++;
-    }
+
+        char trimmedInput[1000];
+
+        int startCopy = firstIndex + (int) strlen(numbers[firstIndexMatch]);
+        int copyLength = (int) strlen(input) - (int) strlen(numbers[firstIndexMatch]);
+        memcpy(trimmedInput, &input[startCopy], copyLength);
+        trimmedInput[copyLength] = '\0';
+
+
+
+        // printf("trimmed %s\n", trimmedInput);
+        // printf("%i\n", (int) strlen(trimmedInput));
+
+        //           11111 
+        // 012345678901234
+        // abcone2threexyz
+        //        threexyz
+
+        for (int i = 0; i < 9; i++) {
+            if ((substring[0] = strstr(trimmedInput, numbers[i])) != NULL) {
+
+                //                             15                 7
+                int startIndex = (int) strlen(input) - (int) strlen(*substring);
+
+                // printf("%i %s\n", i, *substring);
+                // printf("%i %i %i %i\n", (int) strlen(input), (int) strlen(numbers[firstIndex]), (int) strlen(*substring), (int) strlen(numbers[firstIndexMatch]));
+                // int startIndex = (int) strlen(input) - (int) strlen(numbers[firstIndex]) - (int) strlen(*substring) - (int) strlen(numbers[firstIndexMatch]);
+
+                if (startIndex > lastIndex) {
+                    lastIndex = startIndex;
+                    lastIndexMatch = i;
+                }
+            }
+        }
+
+        // printf("input %s - first %i %i %s - last %i %i %s\n", input, firstIndex, firstIndexMatch, numbers[firstIndexMatch], lastIndex, lastIndexMatch, numbers[lastIndexMatch]);
+
+        int firstReplacedLength = (int) strlen(numbers[firstIndexMatch]);
+        int lastReplacedLength = (int) strlen(numbers[lastIndexMatch]);
+
+        int i = 0; // current index of input
+        int j = 0; // current index of newString
+
+        for(; i < firstIndex;) {
+            newString[i] = input[i];
+            i++;
+            j++;
+        }
+
+        // printf("String start %s\n", newString);
+
+        if (firstIndexMatch > -1) {
+            newString[firstIndex] = firstIndexMatch + 1 + '0';
+            i = i + firstReplacedLength;
+            j++;
+        }
+        
+        // printf("First string replacement %s\n", newString);
+
+        for (; i < lastIndex;) {
+            // printf("%c\n", input[i]);
+            // printf("mid %i\n", i);
+            // printf("firstReplacedLength %i\n", firstReplacedLength);
+            newString[j] = input[i];
+            i++;
+            j++;
+        }
+
+
+        // printf("up to lastindex %s\n", newString);
+
+        // printf("%i\n", firstIndex + firstReplacedLength);
+
+        if (firstIndex != lastIndex && firstIndex + firstReplacedLength -1 < lastIndex && lastIndexMatch > -1) {
+            newString[j] = lastIndexMatch + 1 + '0';
+            i = i + lastReplacedLength;
+            j++;
+
+            // printf("Last string replacement %s\n", newString);
+        }
+
+        for (; i < (int) strlen(input);) {
+            // printf("%c\n", input[i]);
+            newString[j] = input[i];
+            i++;
+            j++;
+        }
+
+        return *newString;
+    
 }
-
-// one
-// two
-// three
-// four
-// five
-// six
-// seven
-// eight
-// nine
-
-
-
-
-
