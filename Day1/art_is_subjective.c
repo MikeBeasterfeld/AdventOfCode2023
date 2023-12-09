@@ -4,23 +4,25 @@
 
 int main(void)
 {
-    char filename[] = "Day1Part1/input3.txt";
-    FILE *fptr;
-    fptr = fopen(filename, "r");
+    // char filename[] = "Day1Part1/input3.txt";
+    // FILE *fptr;
+    // fptr = fopen(filename, "r");
+
+    // char character;
+
+    // if (fptr == NULL)
+    // {
+    //     printf("Could not open '%s'", filename);
+    // }
 
     char character;
-
-    if (fptr == NULL)
-    {
-        printf("Could not open '%s'", filename);
-    }
 
     int total = 0;
 
     int array_pos = 1;
     int numbers[2];
 
-    while ((character = fgetc(fptr)) != EOF)
+    while ((character = getc(stdin)) != EOF)
     {
         if (isdigit(character))
         {
