@@ -97,7 +97,7 @@ char *words_to_numbers(char input[1000])
 
     if (firstIndexMatch > -1)
     {
-        newString[firstIndex] = firstIndexMatch + 1 + '0';
+        strncpy(newString[firstIndex], (firstIndexMatch + 1) + '0', 1);
         i = i + firstReplacedLength;
         j++;
     }

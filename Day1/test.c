@@ -1,18 +1,19 @@
 #include <stdio.h>
-#include "words_to_numbers.c"
-#include "test2.c"
+#include "util.c"
+#include <string.h>
+
+void stringCompareExpect(char expected[], char got[])
+{
+    int compare = strcmp(expected, got);
+
+    printf("Expected: '%s' Got: '%s' - Result: %s\n", expected, got, compare == 0 ? "OK" : "Failed");
+}
 
 int main(void)
 {
-    char *testresult = returnString();
+    stringCompareExpect("t1999", replace_number_words("tonenine9nine"));
 
-    printf("%s\n", testresult);
-
-    char testPhrase[] = "tonenine9nine";
-
-    char *result = words_to_numbers(testPhrase);
-
-    printf("%s %s %i\n", testPhrase, result, strcmp(result, "t1nine99"));
+    stringCompareExpect("t1nine99", words_to_number("tonenine9nine"));
 
     return 1;
 }
