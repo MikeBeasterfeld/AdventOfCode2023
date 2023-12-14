@@ -11,7 +11,11 @@ void stringCompareExpect(char expected[], char got[])
 
 int main(void)
 {
-    stringCompareExpect("t1999", replace_number_words("tonenine9nine"));
+    char word[] = "tonenine9nine";
+    char *pWord = &word;
+    replace_number_words(*pWord);
+
+    stringCompareExpect("t1999", pWord);
 
     stringCompareExpect("t1nine99", words_to_number("tonenine9nine"));
 

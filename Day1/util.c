@@ -8,7 +8,7 @@ char *words_to_number(char input[1000])
     return input;
 }
 
-char *replace_number_words(char input[1000])
+void replace_number_words(char input[1000])
 {
     char *numberWords[] = {
         "one",
@@ -21,55 +21,26 @@ char *replace_number_words(char input[1000])
         "eight",
         "nine"};
 
-    char result[1000];
-    char match[1000];
-    char *earliestPosition;
-    int earliestIndex = 1000;
-    int earliestNumber = 0;
-    int earliestNumberSize = 0;
-    char earliestMatch[6];
-    bool updated = false;
-
     do
     {
+        char *pEarliestMatch = NULL;
+        char *pEarliestWord = NULL;
+
         for (int i = 0; i < 9; i++)
         {
-            char *match = strstr(input, numberWords[i + 1]);
-            printf("%i %s\n", i, match);
+            char *pMatch = strstr(input, numberWords[i + 1]);
+            printf("%i %s\n", i, pMatch);
 
-            if (match != NULL)
+            if (pMatch == NULL || pEarliestMatch < pMatch)
             {
-                int foundIndex = (int)strlen(input) - (int)strlen(match) + 1;
-                printf("Index %i\n", foundIndex);
-
-                if (foundIndex < earliestIndex)
-                {
-                    printf("bar\n");
-                    earliestPosition = match;
-                    strcpy(earliestMatch, numberWords[i]);
-                    earliestIndex = foundIndex;
-                    // earliestNumber = i + 1;
-                    // earliestNumberSize = (int)strlen(numberWords[i + 1]);
-                }
+                pEarliestMatch = pMatch;
+                pEarliestWord = numberWords[i + 1];
             }
         }
 
-        if (earliestIndex != 1000)
-        {
-            strcpy(result, input);
-            char temp[1000];
-            printf("foo\n");
+        printf("First occurence of '%s' in '%s' is '%p'\n", pEarliestWord, input, pEarliestMatch);
 
-            strcpy(temp, earliestPosition + strlen(earliestMatch));
-            printf("temp %s", temp);
+    } while (0);
 
-            strcpy(earliestPosition, earliestMatch);
-
-            strcat(result, temp);
-        }
-    } while (updated == true);
-
-    printf("Result %s \n", result);
-
-    return result;
+    printf("Result %s \n", input);
 }
