@@ -11,13 +11,42 @@ void stringCompareExpect(char expected[], char got[])
 
 int main(void)
 {
-    char word[] = "tonenine9nine";
-    char *pWord = &word;
-    replace_number_words(*pWord);
+    char word[1000] = "tonenine9nine";
 
-    stringCompareExpect("t1999", pWord);
+    replace_number_words(word);
+    stringCompareExpect("t1nine99", word);
 
-    stringCompareExpect("t1nine99", words_to_number("tonenine9nine"));
+    strcpy(word, "two1nine");
+    replace_number_words(word);
+    stringCompareExpect("219", word);
+
+    strcpy(word, "abcone2threexyz");
+    replace_number_words(word);
+    stringCompareExpect("abc123xyz", word);
+
+    strcpy(word, "xtwone3four");
+    replace_number_words(word);
+    stringCompareExpect("x2ne34", word);
+
+    strcpy(word, "4nineeightseven2");
+    replace_number_words(word);
+    stringCompareExpect("49eight72", word);
+
+    strcpy(word, "zoneight234");
+    replace_number_words(word);
+    stringCompareExpect("z1ight234", word);
+
+    strcpy(word, "7pqrstsixteen");
+    replace_number_words(word);
+    stringCompareExpect("7pqrst6teen", word);
+
+    strcpy(word, "7pqrstsixteen");
+    replace_number_words(word);
+    stringCompareExpect("7pqrst6teen", word);
+
+    strcpy(word, "tonenine9oneight");
+    replace_number_words(word);
+    stringCompareExpect("t1nine9on8", word);
 
     return 1;
 }

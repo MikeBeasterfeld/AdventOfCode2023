@@ -2,15 +2,16 @@
 #include <string.h>
 #include <stdbool.h>
 
-char *words_to_number(char input[1000])
-{
+// char *words_to_number(char input[1000])
+// {
 
-    return input;
-}
+//     return input;
+// }
 
-void replace_number_words(char input[1000])
+void replace_number_words(char *input)
 {
     char *numberWords[] = {
+        "",
         "one",
         "two",
         "three",
@@ -21,26 +22,119 @@ void replace_number_words(char input[1000])
         "eight",
         "nine"};
 
+    bool matchFound = false;
+
     do
     {
-        char *pEarliestMatch = NULL;
-        char *pEarliestWord = NULL;
+        char *pFirstMatch = NULL;
+        int wordLength = 0;
+        int index;
 
-        for (int i = 0; i < 9; i++)
+        matchFound = false;
+
+        for (int i = 1; i < 10; i++)
         {
-            char *pMatch = strstr(input, numberWords[i + 1]);
-            printf("%i %s\n", i, pMatch);
+            char *pMatch = strstr(input, numberWords[i]);
+            // printf("%i - %s - %p\n", i, pMatch, pMatch);
 
-            if (pMatch == NULL || pEarliestMatch < pMatch)
+            if (pMatch && (pFirstMatch == NULL || pFirstMatch > pMatch))
             {
-                pEarliestMatch = pMatch;
-                pEarliestWord = numberWords[i + 1];
+                // printf("foo\n");
+                matchFound = true;
+                pFirstMatch = pMatch;
+                index = i;
             }
         }
 
-        printf("First occurence of '%s' in '%s' is '%p'\n", pEarliestWord, input, pEarliestMatch);
+        if (matchFound)
+        {
+            // printf("First occurence of '%s' (%i) in '%s' is '%p'\n", numberWords[index], index, input, pFirstMatch);
 
+            *pFirstMatch = index + '0';
+
+            while (*pFirstMatch)
+            {
+                pFirstMatch++;
+                *pFirstMatch = *(pFirstMatch + (int)strlen(numberWords[index]) - 1);
+                // printf("%s\n", input);
+            }
+
+            pFirstMatch++;
+            pFirstMatch = "/0";
+
+            // while (*pFirstMatch)
+            // {
+            //     // printf("%c - %p\n", *pFirstMatch, pFirstMatch);
+            //     pFirstMatch++;
+            // }
+        }
+
+        // printf("--------\n");
     } while (0);
 
-    printf("Result %s \n", input);
+    do
+    {
+        char *pFirstMatch = NULL;
+        int wordLength = 0;
+        int index;
+
+        matchFound = false;
+
+        for (int i = 1; i < 10; i++)
+        {
+            char *pMatch = strstr(input, numberWords[i]);
+            // printf("%i - %s - %p\n", i, pMatch, pMatch);
+
+            do
+            {
+                // printf("%s\n", pMatch);
+                if (pMatch)
+                {
+
+                    if (pFirstMatch == NULL || pFirstMatch < pMatch)
+                    {
+                        // printf("foo\n");
+                        matchFound = true;
+                        pFirstMatch = pMatch;
+                        index = i;
+                    }
+                    pMatch++;
+                }
+
+            } while (pMatch != NULL && strstr(pMatch, numberWords[i]) != NULL);
+        }
+
+        if (matchFound)
+        {
+            // printf("First occurence of '%s' (%i) in '%s' is '%p'\n", numberWords[index], index, input, pFirstMatch);
+
+            *pFirstMatch = index + '0';
+
+            while (*pFirstMatch)
+            {
+                pFirstMatch++;
+                *pFirstMatch = *(pFirstMatch + (int)strlen(numberWords[index]) - 1);
+                // printf("%s\n", input);
+            }
+
+            pFirstMatch++;
+            pFirstMatch = "/0";
+
+            // while (*pFirstMatch)
+            // {
+            //     // printf("%c - %p\n", *pFirstMatch, pFirstMatch);
+            //     pFirstMatch++;
+            // }
+        }
+
+        // printf("--------\n");
+    } while (0);
+
+    // while (*input)
+    // {
+    //     // printf("%c - %p\n", *input, input);
+    //     input++;
+    // }
+
+    // printf("Result %s \n", input);
 }
