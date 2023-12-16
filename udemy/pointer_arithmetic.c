@@ -1,19 +1,23 @@
 #include <stdio.h>
+#include <string.h>
 
 int main(void)
 {
 
     char str[] = "This is my string";
-    char *pStr = str;
+    char *ptrStart = str, *ptrEnd = str;
 
-    while (*pStr)
+    while (*ptrEnd)
     {
-        printf("%p\n", pStr);
-        printf("%c\n", *pStr);
-        *pStr++;
+        printf("%p\n", ptrEnd);
+        printf("%c\n", *ptrEnd);
+        *ptrEnd++;
     }
 
     printf("\n");
+
+    printf("String length %lu\n", ptrEnd - ptrStart);
+    printf("strlen string length %lu\n", strlen(str));
 
     return 0;
 }
