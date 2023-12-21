@@ -47,6 +47,11 @@ int main(void)
                 char *number = strsep(&pull, " ");
                 char *ptr;
                 long dice = strtol(number, &ptr, 10);
+                if (*ptr != '\0')
+                {
+                    printf("Number conversion failed for '%s'\nExiting early\n", ptr);
+                    return 1;
+                }
 
                 printf("Color: '%s', Dice count: '%ld'\n", pull, dice);
 
