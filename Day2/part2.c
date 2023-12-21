@@ -6,10 +6,6 @@
 
 int main(void)
 {
-    int redCubes = 12;
-    int greenCubes = 13;
-    int blueClubes = 14;
-
     char input[1000];
 
     // printf("hi\n");
